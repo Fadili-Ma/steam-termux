@@ -1,2 +1,4 @@
-# steam-termux
-Termux script to download Steam games from a phone on a faster connection (Pixel/ARM64, no steamcmd needed), then transfer them to your PC and verify in Steam.
+# Download the script and run it
+pkg install -y wget
+wget https://raw.githubusercontent.com/Fadili-Ma/steam-termux/main/steam-termux.sh
+bash steam-termux.sh <steam_user> <appid> "<installdir>"
