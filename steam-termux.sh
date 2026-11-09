@@ -15,14 +15,19 @@ STEAM_USER="$1"
 APPID="$2"
 INSTALLDIR="$3"
 
-# Storage access and keep the phone awake during the download
-termux-setup-storage || true
+# Ask for storage access only if ~/storage does not exist yet (avoids the y/n prompt)
+[ -d ~/storage ] || termux-setup-storage || true
+# Keep the phone awake during the download
 termux-wake-lock || true
 
-# Install base packages and a Debian container
+# Install base packages
 pkg update -y && pkg upgrade -y
 pkg install -y proot-distro wget
-proot-distro install debian || true
+
+# Install the Debian container only if it is missing (avoids the "already exists" error)
+if [ ! -d "$PREFIX/var/lib/proot-distro/containers/debian" ]; then
+  proot-distro install debian
+fi
 
 # Install .NET runtime + DepotDownloader inside Debian
 proot-distro login debian -- bash -c '
